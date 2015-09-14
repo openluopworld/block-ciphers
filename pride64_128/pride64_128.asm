@@ -262,9 +262,9 @@ encLoop:
 
 	inc currentRound;
 	cpi currentRound, ENC_DEC_ROUNDS;
-	breq lastRound;
+	breq enclastRound;
 	jmp encLoop;
-lastRound:
+enclastRound:
 	ld rk1, y+;
 	ld rk3, y+;
 	ld rk5, y+;
@@ -333,41 +333,202 @@ lastRound:
 
 	/*
 	 * Subroutine: decrypt
-	 * Function:   decyrpt the 128 bytes of data
+	 * Function:   
 	 * Register:   
 	 */
-#ifdef	DECRYPT
+#ifdef DECRYPT
 decrypt:
 	ldi r26, low(SRAM_PTEXT); x stores the current address of data
 	ldi r27, high(SRAM_PTEXT);
-	; load the ciphertext from RAM to registers [r7,...,r0], X = [r7, r6, r5, r4], Y = [r3, r2, r1, r0]
-	ld r7, x+ ;
-	ld r6, x+ ;
-	ld r5, x+ ;
-	ld r4, x+ ;
-	ld r3, x+ ;
-	ld r2, x+ ;
-	ld r1, x+ ;
-	ld r0, x+ ;
+	ld s0, x+ ;
+	ld s1, x+ ;
+	ld s2, x+ ;
+	ld s3, x+ ;
+	ld s4, x+ ;
+	ld s5, x+ ;
+	ld s6, x+ ;
+	ld s7, x+ ;
+	; whitening key2
+	ldi r28, low(SRAM_KEY0); x stores the current address of data
+	ldi r29, high(SRAM_KEY0);
+	ld rk0, y+;
+	ld rk1, y+;
+	ld rk2, y+;
+	ld rk3, y+;
+	ld rk4, y+;
+	ld rk5, y+;
+	ld rk6, y+;
+	ld rk7, y+;
+	; eor k0
+	eor s0, rk0;
+	eor s1, rk1;
+	eor s2, rk2;
+	eor s3, rk3;
+	eor s4, rk4;
+	eor s5, rk5;
+	eor s6, rk6;
+	eor s7, rk7;
+	; Substitution Layer
+	movw t0, s0
+	movw t2, s2
+	and s0, s2
+	eor s0, s4
+	and s2, s4
+	eor s2, s6
+	and s1, s3
+	eor s1, s5
+	and s3, s5
+	eor s3, s7
+	movw s4, s0
+	movw s6, s2
+	and s4, s6
+	eor s4, t0
+	and s6, s4
+	eor s6, t2
+	and s5, s7
+	eor s5, t1
+	and s7, s5
+	eor s7, t3
+	
+	ldi r28, low(SRAM_KEYS_FIXED_FOUR); stores the start address of keys
+	ldi r29, high(SRAM_KEYS_FIXED_FOUR);
+	ld rk0, y+;
+	ld rk2, y+;
+	ld rk4, y+;
+	ld rk6, y+;
+	ldi r28, low(SRAM_KEYS_FIXED_FOUR); stores the start address of keys
+	ldi r29, high(SRAM_KEYS_FIXED_FOUR);
+	ld rk7, -y;
+	ld rk5, -y;
+	ld rk3, -y;
+	ld rk1, -y;
+	; eor round keys
+	eor s0, rk0;
+	eor s1, rk1;
+	eor s2, rk2;
+	eor s3, rk3;
+	eor s4, rk4;
+	eor s5, rk5;
+	eor s6, rk6;
+	eor s7, rk7;
 
-	ldi r28, low(SRAM_PTEXT); the address of keys
-	ldi r29, high(SRAM_PTEXT);
-	;sbiw r28, 1; y is just the start address of keys + 176. So it does not need sub 1.
 	clr currentRound; reset
-	clr r30; r30 is useless this time
 decLoop:
+	; State s0, s1, s2, s3, s4, s5, s6, s7
+	; Temporary registers t0, t1, t2, t3
+	; Linear Layer and Inverse Linear Layer: L0
+	movw t0, s0 ; t1:t0 = s1:s0
+	swap s0
+	swap s1
+	eor s0, s1
+	eor t0, s0
+	mov s1, t0
+	eor s0, t1
+	; Inverse Linear Layer: L1
+	movw t0, s2 ; t1:t0 = s3:s2
+	movw t2, s2 ; t3:t2 = s3:s2
+	lsr t0
+	ror t2
+	lsr t1
+	ror t3
+	eor t3, t2
+	eor s3, t3
+	swap s3
+	mov s2, t3
+	lsr t3
+	ror s2
+	eor s2, t2
+	; Inverse Linear Layer: L2
+	movw t0, s4 ; t1:t0 = s5:s4
+	movw t2, s4 ; t3:t2 = s5:s4
+	lsr t0
+	ror t2
+	lsr t1
+	ror t3
+	eor t3, t2
+	eor s5, t3
+	mov s4, t3
+	lsr t3
+	ror s4
+	eor s4, t2
+	swap s4
+	; Linear Layer and Inverse Linear Layer: L3
+	movw t0, s6 ; t1:t0 = s7:s6
+	swap s6
+	swap s7
+	eor s6, s7
+	eor t1, s6
+	mov s7, t1
+	eor s6, t0
+	; Substitution Layer
+	movw t0, s0
+	movw t2, s2
+	and s0, s2
+	eor s0, s4
+	and s2, s4
+	eor s2, s6
+	and s1, s3
+	eor s1, s5
+	and s3, s5
+	eor s3, s7
+	movw s4, s0
+	movw s6, s2
+	and s4, s6
+	eor s4, t0
+	and s6, s4
+	eor s6, t2
+	and s5, s7
+	eor s5, t1
+	and s7, s5
+	eor s7, t3
+	; eor k
+	ld rk7, -y;
+	ld rk5, -y;
+	ld rk3, -y;
+	ld rk1, -y;
+	; eor round keys
+	eor s0, rk0;
+	eor s1, rk1;
+	eor s2, rk2;
+	eor s3, rk3;
+	eor s4, rk4;
+	eor s5, rk5;
+	eor s6, rk6;
+	eor s7, rk7;
+
 	inc currentRound;
 	cpi currentRound, ENC_DEC_ROUNDS;
-	brne decLoop;
+	breq declastRound;
+	jmp decLoop;
+declastRound:
+	; whitening key0
+	ldi r28, low(SRAM_KEY0); x stores the current address of data
+	ldi r29, high(SRAM_KEY0);
+	ld rk0, y+;
+	ld rk1, y+;
+	ld rk2, y+;
+	ld rk3, y+;
+	ld rk4, y+;
+	ld rk5, y+;
+	ld rk6, y+;
+	ld rk7, y+;
+	; eor k0
+	eor s0, rk0;
+	eor s1, rk1;
+	eor s2, rk2;
+	eor s3, rk3;
+	eor s4, rk4;
+	eor s5, rk5;
+	eor s6, rk6;
+	eor s7, rk7;
 	; move cipher text back to plain text
-	st -x, r0;
-	st -x, r1;
-	st -x, r2;
-	st -x, r3;
-	st -x, r4;
-	st -x, r5;
-	st -x, r6;
 	st -x, r7;
-
-	ret; the end point is here or not makes much difference.
+	st -x, r6;
+	st -x, r5;
+	st -x, r4;
+	st -x, r3;
+	st -x, r2;
+	st -x, r1;
+	st -x, r0;
+	ret;
 #endif
