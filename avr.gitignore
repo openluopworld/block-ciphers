@@ -1,0 +1,13 @@
+# debug files
+Debug/
+Release/
+
+*.atsln
+*.atsuo
+*.asmproj
+
+*.hex
+*.lss
+*.map
+*.obj
+*.tep
