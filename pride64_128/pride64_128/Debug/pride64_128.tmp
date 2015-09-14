@@ -1,0 +1,47 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.57</VERSION>
+ <DEVICE>"ATmega128"</DEVICE>
+ <WORKING_DIR>E:\avr_block_ciphers\pride64_128\pride64_128\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>D:\software_setup_study\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>E:\avr_block_ciphers\pride64_128\pride64_128\interface.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>D:\software_setup_study\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include\m128def.inc</FILE>
+  <FILE>E:\avr_block_ciphers\pride64_128\pride64_128\./pride64_128.asm</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>E:\avr_block_ciphers\pride64_128\pride64_128\Debug/pride64_128.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>pride64_128.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>pride64_128.map</FILE>
+  <FILE>pride64_128.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <main><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\interface.asm</FILE><LINE>48</LINE></main>
+  <keyschedule><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\./pride64_128.asm</FILE><LINE>76</LINE></keyschedule>
+  <SRAM_KEYS><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\interface.asm</FILE><LINE>189</LINE></SRAM_KEYS>
+  <SRAM_KEYS_FIXED_FOUR><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\interface.asm</FILE><LINE>190</LINE></SRAM_KEYS_FIXED_FOUR>
+  <fixedBytes><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\./pride64_128.asm</FILE><LINE>83</LINE></fixedBytes>
+  <unFixedBytes><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\./pride64_128.asm</FILE><LINE>96</LINE></unFixedBytes>
+  <keysExtend><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\./pride64_128.asm</FILE><LINE>117</LINE></keysExtend>
+  <encrypt><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\./pride64_128.asm</FILE><LINE>143</LINE></encrypt>
+  <SRAM_PTEXT><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\interface.asm</FILE><LINE>191</LINE></SRAM_PTEXT>
+  <SRAM_KEY0><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\interface.asm</FILE><LINE>188</LINE></SRAM_KEY0>
+  <encLoop><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\./pride64_128.asm</FILE><LINE>185</LINE></encLoop>
+  <enclastRound><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\./pride64_128.asm</FILE><LINE>267</LINE></enclastRound>
+  <decrypt><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\./pride64_128.asm</FILE><LINE>340</LINE></decrypt>
+  <decLoop><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\./pride64_128.asm</FILE><LINE>416</LINE></decLoop>
+  <declastRound><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\./pride64_128.asm</FILE><LINE>503</LINE></declastRound>
+  <wait><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\interface.asm</FILE><LINE>22</LINE></wait>
+  <w_loop><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\interface.asm</FILE><LINE>24</LINE></w_loop>
+  <wait2><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\interface.asm</FILE><LINE>37</LINE></wait2>
+  <w_loop2><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\interface.asm</FILE><LINE>39</LINE></w_loop2>
+  <PTEXT_LOOP><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\interface.asm</FILE><LINE>53</LINE></PTEXT_LOOP>
+  <KEY_LOOP><FILE>E:\avr_block_ciphers\pride64_128\pride64_128\interface.asm</FILE><LINE>84</LINE></KEY_LOOP>
+ </LABELS>
+</ASSEMBLER_INFO>
