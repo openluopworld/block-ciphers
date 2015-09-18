@@ -152,5 +152,10 @@ KEY_LOOP:
 .DSEG
   SRAM_KEYS: .BYTE KEYS_NUM_BYTE;        the 44*4 bytes of round keys
   SRAM_PTEXT: .BYTE PTEXT_NUM_BYTE;      the 16 blocks(each block has 8 bytes) of plaintext. For each block, the byte is from high to low.
+#ifdef LInRAM
+  SRAM_L: .byte 116
+#else
   SRAM_L: .byte 12
+#endif
+
 ;******************** MAIN (END) *********************************

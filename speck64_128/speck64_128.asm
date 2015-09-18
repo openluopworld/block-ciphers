@@ -15,6 +15,10 @@
 #define ENCRYPT
 #define DECRYPT
 
+#ifdef KEYSCHEDULE
+	#define LInRAM		; 116 bytes of L is all in RAM
+#endif
+
 .def temp = r22;
 .def transferL = r23;
 .def currentRound = r24;
@@ -39,9 +43,15 @@ keyschedule:
 	clr r21; store the value of zero
 	ldi r26, low(SRAM_KEYS);
 	ldi r27, high(SRAM_KEYS);
-subkey:	
+	#ifdef LInRAM
 	ldi r28, low(SRAM_L);
 	ldi r29, high(SRAM_L);
+	#endif
+subkey:	
+	#ifndef LInRAM
+	ldi r28, low(SRAM_L);
+	ldi r29, high(SRAM_L);
+	#endif
 	;[r3,r2,r1,r0] to store ki
 	ld r0, x+;
 	ld r1, x+;
@@ -87,6 +97,16 @@ subkey:
 	st x+, r3;
 	sbiw r26, 4;
 
+	#ifdef LInRAM
+	adiw z, 8;
+	st z+, r5;
+	st z+, r6;
+	st z+, r7;
+	st z+, r4;
+	sbiw z, 12;
+	#endif
+
+	#ifndef LInRAM
 	; update the lRAM, l[i] is useless.
 	ldi r30, low(SRAM_L);
 	ldi r31, high(SRAM_L);
@@ -101,6 +121,7 @@ L:
 	st z+, r6;
 	st z+, r7;
 	st z+, r4;
+	#endif
 
 	; loop control
 	inc currentRound;
