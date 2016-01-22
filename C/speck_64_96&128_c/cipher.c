@@ -1,6 +1,6 @@
 
-#include "speck.h"
-//#include "primitives.h"
+#include "./../common/cipher.h"
+#include "constants.h"
 #include "speck_macro.h"
 
 /*
@@ -57,5 +57,7 @@ void decrypt(u8 * cipherText, const u8 * keys ) {
 	int i;
 	for ( i = SPECK_ROUNDS-1; i >= 0; i-- ) {
 		invertRoundFunction(cipher[1], cipher[0], rk[i]);
+		//cipher[0] = ror(cipher[1] ^ cipher[0], SPECK_B);
+		//cipher[1] = rol(((cipher[1] ^ rk[i]) - cipher[0]), SPECK_A);
 	}
 }

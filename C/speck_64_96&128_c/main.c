@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 #include "constants.h"
-#include "speck.h"
+#include "./../common/cipher.h"
 
 int main () {
 	#if defined(SPECK_KEY_WORDS) && (SPECK_KEY_WORDS==3)

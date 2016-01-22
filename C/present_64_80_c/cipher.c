@@ -5,11 +5,16 @@
 
 #include <stdint.h>
 
-#include "cipher.h"
+#include "./../common/cipher.h"
 #include "constants.h"
 
 static u8 sbox[] = {0xc, 0x5, 0x6, 0xb, 0x9, 0x0, 0xa, 0xd, 0x3, 0xe, 0xf, 0x8, 0x4, 0x7, 0x1, 0x2};
 static u8 invsbox[] = {0x5, 0xe, 0xf, 0x8, 0xC, 0x1, 0x2, 0xD, 0xB, 0x4, 0x6, 0x3, 0x0, 0x7, 0x9, 0xA};
+
+/*
+ * rotate shift right n-bit on x(a 64-bit block)
+ */
+#define ror(x, n) ( ((x)>>(n)) | ((x)<<(PRESENT_BLOCK_SIZE-(n))) )
 
 /*
  * Key schedule
@@ -17,22 +22,6 @@ static u8 invsbox[] = {0x5, 0xe, 0xf, 0x8, 0xC, 0x1, 0x2, 0xD, 0xB, 0x4, 0x6, 0x
  * roundKeys: round keys
  */
 void encryptKeySchedule( const u8 *key, u8 *roundKeys) {
-	/* 
-	 * 	The following instructions are failing on ARMv7-M using the 
-	 * arm-none-eabi-g++ (Sourcery CodeBench Lite 2014.05-28) 4.8.3 20140320 
-	 * (prerelease) compiler because of the optimizer is grouping the 2 memory 
-	 * accesses in one LDRD instruction. However the 2 memory addresses are not 
-	 * aligned on 64-bit boundaries and the instruction causes an UNALIGN_TRAP 
-	 * (which can not be disabled for LDRD instruction):
-	 * 		uint64_t keylow = *(uint64_t *)key;
-	 * 		uint64_t keyhigh = *(uint64_t*)(key + 2);
-	 *  
-	 *	The next 3 lines replace the wrong instruction sequence:
-	 * 		uint64_t keylow = *(uint64_t *)key;
-	 * 		uint16_t highBytes = *(uint16_t *)(key + 8);
-	 * 		uint64_t keyhigh = ((uint64_t)(highBytes) << 48) | (keylow >> 16);
-	 *
-	 */
 	u64 keylow = *(const u64*)key;
 	u16 highBytes = *(const u16*)(key + 8);
 	u64 keyhigh = ((u64)(highBytes) << 48) | (keylow >> 16);

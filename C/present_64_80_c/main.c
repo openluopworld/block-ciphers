@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 #include "constants.h"
-#include "cipher.h"
+#include "./../common/cipher.h"
 
 int main () {
 	#if defined(PRESENT_KEY_SIZE) && (PRESENT_KEY_SIZE==80)
@@ -19,7 +19,7 @@ int main () {
 			plainText[4], plainText[5], plainText[6], plainText[7]);
 
 		encrypt(plainText, keys);
-		// cipherText is: 0x5ca2e27f 0x111a8fc8
+		// cipherText is: e72c46c0 f5945049
 		printf("After encryption: %x, %x, %x, %x, %x, %x, %x, %x\n", 
 			plainText[0], plainText[1], plainText[2], plainText[3], 
 			plainText[4], plainText[5], plainText[6], plainText[7]);

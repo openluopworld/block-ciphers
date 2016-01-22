@@ -1,6 +1,5 @@
 
 /*
- * SPECK_64_96 and SPECK_64_128
  *
  * The input is from right to left. 
  * The rightmost byte is the least significant byte.
@@ -10,7 +9,12 @@
 #ifndef CIPHER
 #define CIPHER
 
-#include "constants.h"
+#include <stdint.h>
+
+typedef  uint8_t u8;
+typedef  uint16_t u16;
+typedef  uint32_t u32;
+typedef  uint64_t u64;
 
 /*
  * key schedule

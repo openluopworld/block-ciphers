@@ -1,6 +1,5 @@
 
-#include "simon.h"
-//#include "primitives.h"
+#include "./../common/cipher.h"
 #include "simon_macro.h"
 
 /*

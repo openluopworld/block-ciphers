@@ -1,6 +1,5 @@
 
 /*
- * SIMON_64_96 and SIMON_64_128
  *
  * The input is from right to left. 
  * The rightmost byte is the least significant byte.
