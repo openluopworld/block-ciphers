@@ -1,5 +1,5 @@
-# BlockCiphers
-Implementations of block ciphers using C or AVR<br>
+# Lightweight Block Ciphers
+Implementations of lightweight block ciphers using C or AVR<br>
 
 <ul>
 <li><a href="https://eprint.iacr.org/2014/453.pdf">PRIDE 64/128</a></li><br>
