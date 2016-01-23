@@ -8,6 +8,6 @@
 
 #define LBLOCK_BLOCK_SIZE 64
 #define LBLOCK_KEY_SIZE 80
-#define LBLOCK_ROUNDS 31
+#define LBLOCK_ROUNDS 32
 
 #endif
