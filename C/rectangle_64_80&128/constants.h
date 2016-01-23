@@ -1,0 +1,13 @@
+
+/*
+ * PRESENT_64_80
+ */
+
+#ifndef CONSTANTS
+#define CONSTANTS
+
+#define PRESENT_BLOCK_SIZE 64
+#define PRESENT_KEY_SIZE 80
+#define PRESENT_ROUNDS 31
+
+#endif
