@@ -4,7 +4,7 @@
 #include "./../common/cipher.h"
 
 int main () {
-	#if defined(PRESENT_KEY_SIZE) && (PRESENT_KEY_SIZE==80)
+	#if defined(LBLOCK_KEY_SIZE) && (LBLOCK_KEY_SIZE==80)
 		/*
 		 * PRESENT 64/80
 		 */
@@ -29,7 +29,7 @@ int main () {
 			plainText[0], plainText[1], plainText[2], plainText[3], 
 			plainText[4], plainText[5], plainText[6], plainText[7]);
 	#else
-	#if defined(PRESENT_KEY_SIZE) && (PRESENT_KEY_SIZE==128)
+	#if defined(LBLOCK_KEY_SIZE) && (LBLOCK_KEY_SIZE==128)
 		/*
 		 * PRESENT 64/128
 		 */
