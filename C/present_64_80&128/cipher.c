@@ -17,11 +17,11 @@ static u8 invsbox[] = {0x5, 0xe, 0xf, 0x8, 0xC, 0x1, 0x2, 0xD, 0xB, 0x4, 0x6, 0x
 #define ror(x, n) ( ((x)>>(n)) | ((x)<<(PRESENT_BLOCK_SIZE-(n))) )
 
 /*
- * Key schedule
+ * Key schedule for 80-bit
  * key: master key
  * roundKeys: round keys
  */
-void encryptKeySchedule( const u8 *key, u8 *roundKeys) {
+void encryptKeySchedule80( const u8 *key, u8 *roundKeys) {
 	u64 keylow = *(const u64*)key;
 	u16 highBytes = *(const u16*)(key + 8);
 	u64 keyhigh = ((u64)(highBytes) << 48) | (keylow >> 16);
@@ -48,6 +48,40 @@ void encryptKeySchedule( const u8 *key, u8 *roundKeys) {
 		/* round counter addition */
 		keylow ^= (((u64)(i + 1) & 0x01) << 15);
 		keyhigh ^= ((u64)(i + 1) >> 1);
+
+		rk[i+1] = keyhigh;
+	}
+}
+
+/*
+ * Key schedule for 128-bit
+ * key: master key
+ * roundKeys: round keys
+ */
+void encryptKeySchedule128( const u8 *key, u8 *roundKeys) {
+	u64 keylow = *(const u64*)key;
+	u64 keyhigh = *((const u64*)key+1);
+	u64 *rk = (u64*)roundKeys;
+	rk[0] = keyhigh;
+
+	u64 temp;
+	u8 i;
+
+	for (i = 0; i < PRESENT_ROUNDS; i++) {
+		/* 61-bit left shift */
+		temp = ( (keyhigh<<61) | (keylow>>3) );
+		keylow = ( (keylow<<61) | (keyhigh>>3) );
+		keyhigh = temp;
+
+		/* S-Box application */
+		temp = (sbox[keyhigh>>60]<<4) ^ (sbox[(keyhigh>>56)&0xf]);
+		keyhigh &= 0x00FFFFFFFFFFFFFF;
+		keyhigh |= temp<<56;
+
+		/* round counter addition */
+		temp = ((keyhigh<<2) | (keylow>>62)) ^ (u64)(i + 1);
+		keyhigh = (keyhigh & 0xFFFFFFFFFFFFFFF8) ^ (temp & 0x7);
+		keylow = (keylow & 0x3FFFFFFFFFFFFFFF) ^ (temp << 62);
 
 		rk[i+1] = keyhigh;
 	}
