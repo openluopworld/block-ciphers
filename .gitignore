@@ -11,3 +11,5 @@ Release/
 *.map
 *.obj
 *.tep
+
+*~
