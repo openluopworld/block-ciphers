@@ -5,7 +5,7 @@
  *   Author: Administrator
  */ 
 
-.EQU	SBOX_NUM_BYTE = 16
+.EQU	SBOX_NUM_BYTE = 256
 .EQU	ENC_DEC_ROUNDS = 40
 .EQU    PTEXT_NUM_BYTE = 16
 .EQU    KEY_NUM_BYTE = 16
@@ -100,22 +100,6 @@
 	eor 	s5,		k5
 	eor 	s6,		k6
 	eor 	s7,		k7
-	ldd		t0,		y+0
-	eor 	s8,		t0
-	ldd		t0,		y+1
-	eor 	s9,		t0
-	ldd		t0,		y+2
-	eor 	s10,	t0
-	ldd		t0,		y+3
-	eor 	s11,	t0
-	ldd		t0,		y+4
-	eor 	s12,	t0
-	ldd		t0,		y+5
-	eor 	s13,	t0
-	ldd		t0,		y+6
-	eor 	s14,	t0
-	ldd		t0,		y+7
-	eor 	s15,	t0
 .endmacro
 
 
@@ -125,23 +109,82 @@
 ; 12 13 14 15        4  5  6  7
 .macro key_schedule
 	ldd		t0,		y+0
-	std		y+0,	s0
-	ldd		s0,		y+1
-	std		y+1,	s1
-	ldd		s1,		y+7
-	std		y+7,	s7
-	ldd		s7,		y+3
-	std		y+3,	s3
-	ldd		s3,		y+5
-	std		y+5,	s5
-	ldd		s5,		y+6
-	std		y+6,	s6
-	ldd		s6,		y+4
-	std		y+4,	s4
-	ldd		s4,		y+2
-	std		y+2,	s2
-	mov		s2,		t0
+	std		y+0,	k0
+	ldd		k0,		y+1
+	std		y+1,	k1
+	ldd		k1,		y+7
+	std		y+7,	k7
+	ldd		k7,		y+3
+	std		y+3,	k3
+	ldd		k3,		y+5
+	std		y+5,	k5
+	ldd		k5,		y+6
+	std		y+6,	k6
+	ldd		k6,		y+4
+	std		y+4,	k4
+	ldd		k4,		y+2
+	std		y+2,	k2
+	mov		k2,		t0
 .endmacro
+
+
+.macro shift_row
+	mov		t0,		s7
+	mov		s7,		s6
+	mov		s6,		s5
+	mov		s5,		s4
+	mov		s4,		t0
+	mov		t0,		s11
+	mov		s11,	s9
+	mov		s9,		t0
+	mov		t0,		s10
+	mov		s10,	s8
+	mov		s8,		t0
+	mov		t0,		s12
+	mov		s12,	s13
+	mov		s13,	s14
+	mov		s14,	s15
+	mov		s15,	t0
+.endmacro
+
+.macro mix_column
+	// first line
+	eor 	s4,		s8
+	eor 	s8,		s0
+	eor 	s12,	s8
+	mov		t0,		s12
+	mov		s12,	s8
+	mov		s8,		s4
+	mov		s4,		s0
+	mov		s0,		t0
+	// second line
+	eor 	s5,		s9
+	eor 	s9,		s1
+	eor 	s13,	s9
+	mov		t0,		s13
+	mov		s13,	s9
+	mov		s9,		s5
+	mov		s5,		s1
+	mov		s1,		t0
+	// third line
+	eor 	s6,		s10
+	eor 	s10,	s2
+	eor 	s14,	s10
+	mov		t0,		s14
+	mov		s14,	s10
+	mov		s10,	s6
+	mov		s6,		s2
+	mov		s2,		t0
+	// forth line
+	eor 	s7,		s11
+	eor 	s11,		s3
+	eor 	s15,	s11
+	mov		t0,		s15
+	mov		s15,	s11
+	mov		s11,		s7
+	mov		s7,		s3
+	mov		s3,		t0
+.endmacro mix_column
 
 ; 0  1  2  3         0  1  2  3
 ; 4  5  6  7         7  4  5  6
@@ -231,7 +274,8 @@ enc_round:
 	add_const
 	add_key
 	key_schedule
-	shift_row_mix_column
+	shift_row
+	mix_column
 	dec	count
 	breq exit
 	rjmp enc_round
