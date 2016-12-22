@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 #include "constants.h"
-#include "./../common/cipher.h"
+#include "cipher.h"
 
 int main () {
 	#if defined(CIPHERNAME_KEY_SIZE) && (CIPHERNAME_KEY_SIZE==80)

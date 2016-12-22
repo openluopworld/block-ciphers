@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 #include "constants.h"
-#include "./../common/cipher.h"
+#include "cipher.h"
 
 
 #define CASE (1)

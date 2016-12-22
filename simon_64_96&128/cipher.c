@@ -1,6 +1,11 @@
 
-#include "./../common/cipher.h"
-#include "simon_macro.h"
+#include "cipher.h"
+#include "rotate.h"
+
+/*
+ * function f
+ */
+#define f(x) ((rol32(x, 1)&rol32(x, 8)) ^ rol32(x, 2))
 
 /*
  * const z
@@ -32,11 +37,11 @@ void encryptKeySchedule(const u8 * inputKey, u8 * keys ) {
 
 	u32 temp;
 	for ( i = SIMON_KEY_WORDS; i < SIMON_ROUNDS; i++ ) {
-		temp = ror(rk[i-1], 3);
+		temp = ror32(rk[i-1], 3);
 		#if defined(SIMON_KEY_WORDS) && (SIMON_KEY_WORDS==4)
 			temp ^= rk[i-3];
 		#endif
-		temp ^= ror(temp, 1);
+		temp ^= ror32(temp, 1);
 		rk[i] = SIMON_CONST_C ^ rk[i-SIMON_KEY_WORDS] ^ temp;
 		if ( z[SIMON_SEQUENCE_NUMBER][(i-SIMON_KEY_WORDS)%62] == 1 ) {
 			rk[i] ^=  0x1;

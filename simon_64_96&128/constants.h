@@ -1,6 +1,6 @@
 
-#ifndef SIMON
-#define SIMON
+#ifndef SIMON_CONSTANTS
+#define SIMON_CONSTANTS
 
 #define SIMON_BLOCK_SIZE (64)
 #define SIMON_WORD_SIZE (32)

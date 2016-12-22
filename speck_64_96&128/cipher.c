@@ -1,7 +1,22 @@
 
-#include "./../common/cipher.h"
+#include "cipher.h"
 #include "constants.h"
-#include "speck_macro.h"
+#include "rotate.h"
+
+/*
+ * round function
+ */
+#define roundFunction(x, y, k)		\
+	x = (ror32((x), SPECK_A) + (y)) ^ (k);	\
+	y = rol32((y), SPECK_B) ^ (x)
+
+/*
+ * invert round function
+ */
+#define invertRoundFunction(x, y, k)	\
+	y = ror32( (x)^(y), SPECK_B);	\
+	x = rol32( (((x)^(k))-(y)), SPECK_A)
+#endif
 
 /*
  * key schedule
@@ -23,8 +38,8 @@ void encryptKeySchedule(const u8 * inputKey, u8 * keys ) {
 	
 	int i;
 	for ( i = 0; i < SPECK_ROUNDS-1; i++ ) {
-		l[i+SPECK_KEY_WORDS-1] = (rk[i] + ror(l[i], SPECK_A)) ^ (u32)i;
-		rk[i+1] = rol(rk[i], SPECK_B) ^ l[i+SPECK_KEY_WORDS-1];
+		l[i+SPECK_KEY_WORDS-1] = (rk[i] + ror32(l[i], SPECK_A)) ^ (u32)i;
+		rk[i+1] = rol32(rk[i], SPECK_B) ^ l[i+SPECK_KEY_WORDS-1];
 	}
 }
 
@@ -55,7 +70,7 @@ void decrypt(u8 * cipherText, const u8 * keys ) {
 	int i;
 	for ( i = SPECK_ROUNDS-1; i >= 0; i-- ) {
 		invertRoundFunction(cipher[1], cipher[0], rk[i]);
-		//cipher[0] = ror(cipher[1] ^ cipher[0], SPECK_B);
-		//cipher[1] = rol(((cipher[1] ^ rk[i]) - cipher[0]), SPECK_A);
+		//cipher[0] = ror32(cipher[1] ^ cipher[0], SPECK_B);
+		//cipher[1] = rol32(((cipher[1] ^ rk[i]) - cipher[0]), SPECK_A);
 	}
 }

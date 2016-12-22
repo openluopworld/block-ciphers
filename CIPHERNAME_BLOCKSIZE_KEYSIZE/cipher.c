@@ -5,7 +5,7 @@
 
 #include <stdint.h>
 
-#include "./../common/cipher.h"
+#include "cipher.h"
 #include "constants.h"
 
 /*

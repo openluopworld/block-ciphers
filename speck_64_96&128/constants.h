@@ -1,6 +1,6 @@
 
-#ifndef SPECK
-#define SPECK
+#ifndef SPECK_CONSTANTS
+#define SPECK_CONSTANTS
 
 #define SPECK_BLOCK_SIZE (64)
 #define SPECK_WORD_SIZE (32)

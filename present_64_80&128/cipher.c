@@ -5,16 +5,12 @@
 
 #include <stdint.h>
 
-#include "./../common/cipher.h"
+#include "cipher.h"
+#include "rotate.h"
 #include "constants.h"
 
 static u8 sbox[] = {0xc, 0x5, 0x6, 0xb, 0x9, 0x0, 0xa, 0xd, 0x3, 0xe, 0xf, 0x8, 0x4, 0x7, 0x1, 0x2};
 static u8 invsbox[] = {0x5, 0xe, 0xf, 0x8, 0xC, 0x1, 0x2, 0xD, 0xB, 0x4, 0x6, 0x3, 0x0, 0x7, 0x9, 0xA};
-
-/*
- * rotate shift right n-bit on x(a 64-bit block)
- */
-#define ror(x, n) ( ((x)>>(n)) | ((x)<<(PRESENT_BLOCK_SIZE-(n))) )
 
 /*
  * Key schedule for 80-bit
@@ -111,7 +107,7 @@ void encrypt(u8 *plainText, const u8 *roundKeys) {
 			sInput = state & 0xF;
 			state &= 0xFFFFFFFFFFFFFFF0; 
 			state |= sbox[sInput];
-			state = ror(state, 4); 
+			state = ror64(state, 4); 
 		}
 		
 		/* pLayer */
@@ -176,7 +172,7 @@ void decrypt(u8 *cipherText, const u8 *roundKeys) {
 			sInput = state & 0xF;
 			state &= 0xFFFFFFFFFFFFFFF0; 
 			state |= invsbox[sInput];
-			state = ror(state, 4); 
+			state = ror64(state, 4); 
 		}
 
 	}

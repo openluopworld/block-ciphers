@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 #include "constants.h"
-#include "./../common/cipher.h"
+#include "cipher.h"
 
 int main () {
 	#if defined(SIMON_KEY_WORDS) && (SIMON_KEY_WORDS==3)
