@@ -18,5 +18,4 @@ Implementations of lightweight block ciphers using C or assembler<br>
 <li><a href="#">Piccolo 64/80</a></li><br>
 <li><a href="#">TWINE 64/80</a></li><br>
 <li><a href="#">LED 64/80</a></li><br>
-<li><a href="">SKINNY 128/128</a></li><br>
 </ul>
