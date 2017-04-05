@@ -5,16 +5,22 @@
 /*
  * round function
  */
-#define roundFunction(x, y, k)		\
-	x = (ror32((x), SPECK_A) + (y)) ^ (k);	\
-	y = rol32((y), SPECK_B) ^ (x)
+#define roundFunction(x, y, k) \
+    x = ror32(x, SPECK_A);     \
+    x += y;                    \
+	x ^= k;                    \
+	y = rol32(y, SPECK_B);     \
+	y ^= x                     \
 
 /*
  * invert round function
  */
-#define invertRoundFunction(x, y, k)	\
-	y = ror32( (x)^(y), SPECK_B);	\
-	x = rol32( (((x)^(k))-(y)), SPECK_A)
+#define invertRoundFunction(x, y, k) \
+	y ^= x;                          \
+	y = ror32(y, SPECK_B);           \
+	x ^= k;                          \
+	x -= y;                          \
+	x = rol32(x, SPECK_A)            \
 
 /*
  * key schedule
