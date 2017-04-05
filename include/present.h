@@ -14,13 +14,7 @@
 #define PRESENT_KEY_SIZE_128 (128) /* key size in bits */
 #define PRESENT_ROUNDS       (31)  /* rounds */
 
-#include <stdint.h>
-
-typedef  uint8_t  u8;
-typedef  uint16_t u16;
-typedef  uint32_t u32;
-typedef  uint64_t u64;
-
+#include "types.h"
 
 /*
  * key schedule

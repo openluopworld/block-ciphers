@@ -18,13 +18,7 @@
 #define SPECK_KEY_WORDS_128 (4)
 #define SPECK_ROUNDS_128    (27)
 
-#include <stdint.h>
-
-typedef  uint8_t  u8;
-typedef  uint16_t u16;
-typedef  uint32_t u32;
-typedef  uint64_t u64;
-
+#include "types.h"
 
 /*
  * key schedule
