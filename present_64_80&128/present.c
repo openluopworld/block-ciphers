@@ -5,9 +5,8 @@
 
 #include <stdint.h>
 
-#include "cipher.h"
+#include "present.h"
 #include "rotate.h"
-#include "constants.h"
 
 static u8 sbox[] = {0xc, 0x5, 0x6, 0xb, 0x9, 0x0, 0xa, 0xd, 0x3, 0xe, 0xf, 0x8, 0x4, 0x7, 0x1, 0x2};
 static u8 invsbox[] = {0x5, 0xe, 0xf, 0x8, 0xC, 0x1, 0x2, 0xD, 0xB, 0x4, 0x6, 0x3, 0x0, 0x7, 0x9, 0xA};
@@ -17,7 +16,7 @@ static u8 invsbox[] = {0x5, 0xe, 0xf, 0x8, 0xC, 0x1, 0x2, 0xD, 0xB, 0x4, 0x6, 0x
  * key: master key
  * roundKeys: round keys
  */
-void encryptKeySchedule80( const u8 *key, u8 *roundKeys) {
+void present_64_80_key_schedule( const u8 *key, u8 *roundKeys) {
 	u64 keylow = *(const u64*)key;
 	u16 highBytes = *(const u16*)(key + 8);
 	u64 keyhigh = ((u64)(highBytes) << 48) | (keylow >> 16);
@@ -54,7 +53,7 @@ void encryptKeySchedule80( const u8 *key, u8 *roundKeys) {
  * key: master key
  * roundKeys: round keys
  */
-void encryptKeySchedule128( const u8 *key, u8 *roundKeys) {
+void present_64_128_key_schedule( const u8 *key, u8 *roundKeys) {
 	u64 keylow = *(const u64*)key;
 	u64 keyhigh = *((const u64*)key+1);
 	u64 *rk = (u64*)roundKeys;
@@ -89,7 +88,7 @@ void encryptKeySchedule128( const u8 *key, u8 *roundKeys) {
  * roundKeys: round keys
  *
  */
-void encrypt(u8 *plainText, const u8 *roundKeys) {
+void present_encrypt(u8 *plainText, const u8 *roundKeys) {
 	u64 state = *(u64*)plainText;
 	const u64* rk = (const u64*)roundKeys;
 	u64 result;
@@ -139,7 +138,7 @@ void encrypt(u8 *plainText, const u8 *roundKeys) {
  * cipherText: one block of cipher text
  * roundKeys: round keys
  */
-void decrypt(u8 *cipherText, const u8 *roundKeys) {
+void present_decrypt(u8 *cipherText, const u8 *roundKeys) {
 	u64 state = *(u64*)cipherText;
 	const u64* rk = (const u64*)roundKeys;
 	u64 result;
