@@ -16,7 +16,6 @@
 #define SIMON_ROUNDS_96           (42)
 #define SIMON_KEY_WORDS_128       (4)
 #define SIMON_ROUNDS_128          (44)
-#endif
 
 #include <stdint.h>
 
@@ -52,3 +51,5 @@ void simon_64_128_encrypt(u8 * plainText, const u8 * keys );
 void simon_64_96_decrypt(u8 * cipherText, const u8 * keys );
 
 void simon_64_128_decrypt(u8 * cipherText, const u8 * keys );
+
+#endif
