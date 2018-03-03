@@ -18,4 +18,6 @@ Implementations of some lightweight block ciphers in C
 * [PRIDE 64/128](https://eprint.iacr.org/2014/453.pdf)
 * Robin 128/128
 * [RECTANGLE 64/80&128](https://eprint.iacr.org/2014/084.pdf)
+  + Reference and some assembler implementations can be found in [FELICS](https://www.cryptolux.org/index.php/FELICS)
+  + May add an implementation of ARM NEON
 * [SKINNY 128/128](https://eprint.iacr.org/2016/660.pdf)
