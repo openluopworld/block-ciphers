@@ -21,3 +21,21 @@ Implementations of some lightweight block ciphers in C
   + Reference and some assembler implementations can be found in [FELICS](https://www.cryptolux.org/index.php/FELICS)
   + May add an implementation of ARM NEON
 * [SKINNY 128/128](https://eprint.iacr.org/2016/660.pdf)
+
+### NEON
+* load
+  + vld4\_16
+```C
+  uint16x4x4 vld4_16(const uint16_t *)
+  Form of expected instructions: vld4.16 {d0, d1, d2, d3}, [r0]
+```
+ + vld4q\_u16
+```C
+  uint16x8x4_t vld4q_u16 (const uint16_t *) 
+  Form of expected instruction(s): vld4.16 {d0, d1, d2, d3}, [r0]
+```
+ + vld4\lane\u16
+```C
+ uit16x4x4_t vld4_lane_u16 (const uint16_t *, uint16x4x4_t, const int) 
+ Form of expected instruction(s): vld4.16 {d0[0], d1[0], d2[0], d3[0]}, [r0]
+```
