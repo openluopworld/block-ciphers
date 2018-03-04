@@ -83,9 +83,9 @@ void encrypt(const uint8_t *roundKeys,
 		pt.val[2] = veor_u16(pt.val[2], pt.val[1]);
 		pt.val[1] = veor_u16(pt.val[1], sbox0);
 		/* ShiftRow */
-		pt.val[1] = vorr_u16(vshl_u16(pt.val[1], 1), vshl_u16(pt.val[1], -15));
-		pt.val[2] = vorr_u16(vshl_u16(pt.val[2], 12), vshl_u16(pt.val[2], -4));
-		pt.val[3] = vorr_u16(vshl_u16(pt.val[3], 13), vshl_u16(pt.val[3], -3));
+		pt.val[1] = vorr_u16(vshl_n_u16(pt.val[1], 1), vshr_n_u16(pt.val[1], 15));
+		pt.val[2] = vorr_u16(vshl_n_u16(pt.val[2], 12), vshr_n_u16(pt.val[2], 4));
+		pt.val[3] = vorr_u16(vshl_n_u16(pt.val[3], 13), vshr_n_u16(pt.val[3], 3));
 	}
 	pt.val[0] = veor_u16(pt.val[0], vld1_dup_u16(rks));
 	pt.val[1] = veor_u16(pt.val[1], vld1_dup_u16(rks+1);
@@ -123,9 +123,9 @@ void decrypt(const uint8_t *rks,
 		ct.val[3] = veor_u16(ct.val[3], vld1_dup_u16(rks+3);
 		rk16 -= 4;
 		/* ShiftRow */
-		ct.val[1] = vorr_u16(vshl_u16(ct.val[1], -1), vshl_u16(ct.val[1], 15));
-		ct.val[2] = vorr_u16(vshl_u16(ct.val[2], -12), vshl_u16(ct.val[2], 4));
-		ct.val[3] = vorr_u16(vshl_u16(ct.val[3], -13), vshl_u16(ct.val[3], 3));
+		ct.val[1] = vorr_u16(vshr_n_u16(ct.val[1], -1), vshl_n_u16(ct.val[1], 15));
+		ct.val[2] = vorr_u16(vshr_n_u16(ct.val[2], -12), vshl_n_u16(ct.val[2], 4));
+		ct.val[3] = vorr_u16(vshr_n_u16(ct.val[3], -13), vshl_n_u16(ct.val[3], 3));
 		/* Invert sbox */
 		sbox0 =  w0;
 		ct.val[0] = vand_u16(ct.val[0], ct.val[2]);
