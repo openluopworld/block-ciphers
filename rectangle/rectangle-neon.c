@@ -30,36 +30,35 @@ void encrypt(const uint8_t *rks,
 
 	for (i = 0; i < ROUNDS; ++i) {
 		/* AddRoundKey */
-		pt[0] = veor_u16(pt[0], vld1_dup_u16(rks));
-		pt[1] = veor_u16(pt[1], vld1_dup_u16(rks+1);
-		pt[2] = veor_u16(pt[2], vld1_dup_u16(rks+2);
-		pt[3] = veor_u16(pt[3], vld1_dup_u16(rks+3);
-		rks += 4;
+		pt.val[0] = veor_u16(pt.val[0], vld1_dup_u16(rks));
+		pt.val[1] = veor_u16(pt.val[1], vld1_dup_u16(rks+1);
+		pt.val[2] = veor_u16(pt.val[2], vld1_dup_u16(rks+2);
+		pt.val[3] = veor_u16(pt.val[3], vld1_dup_u16(rks+3);
+		rks       += 4;
 		/* SubColumn */	
-		sbox0 =  pt[2];	
-		pt[2] = veor_u16(pt[0], pt[1]);
-//		pt[1]    =  ~pt[1];
-		pt[1] = veor_u16(pt[1], invert);
-		sbox1 =  pt[0];
-		pt[0] = vand_u16(pt[0], pt[1]);
-		pt[1] = vorr_u16(pt[1], pt[3]);
-		pt[1] = veor_u16(pt[1], sbox1);
-		pt[3] = veor_u16(pt[3], sbox0);
-		pt[0] = veor_u16(pt[0], pt[3]);
-		pt[3] = vand_u16(pt[3], pt[1]);
-		pt[3] = veor_u16(pt[3], pt[2]);
-		pt[2] = vorr_u16(pt[2], pt[0]);
-		pt[2] = veor_u16(pt[2], pt[1]);
-		pt[1] = veor_u16(pt[1], sbox0);
+		sbox0     =  pt.val[2];	
+		pt.val[2] = veor_u16(pt.val[0], pt.val[1]);
+		pt.val[1] = veor_u16(pt.val[1], invert);
+		sbox1     =  pt.val[0];
+		pt.val[0] = vand_u16(pt.val[0], pt.val[1]);
+		pt.val[1] = vorr_u16(pt.val[1], pt.val[3]);
+		pt.val[1] = veor_u16(pt.val[1], sbox1);
+		pt.val[3] = veor_u16(pt.val[3], sbox0);
+		pt.val[0] = veor_u16(pt.val[0], pt.val[3]);
+		pt.val[3] = vand_u16(pt.val[3], pt.val[1]);
+		pt.val[3] = veor_u16(pt.val[3], pt.val[2]);
+		pt.val[2] = vorr_u16(pt.val[2], pt.val[0]);
+		pt.val[2] = veor_u16(pt.val[2], pt.val[1]);
+		pt.val[1] = veor_u16(pt.val[1], sbox0);
 		/* ShiftRow */
-		pt[1] = vorr_u16(vshl_u16(pt[1], 1), vshl_u16(pt[1], -15));
-		pt[2] = vorr_u16(vshl_u16(pt[2], 12), vshl_u16(pt[2], -4));
-		pt[3] = vorr_u16(vshl_u16(pt[3], 13), vshl_u16(pt[3], -3));
+		pt.val[1] = vorr_u16(vshl_u16(pt.val[1], 1), vshl_u16(pt.val[1], -15));
+		pt.val[2] = vorr_u16(vshl_u16(pt.val[2], 12), vshl_u16(pt.val[2], -4));
+		pt.val[3] = vorr_u16(vshl_u16(pt.val[3], 13), vshl_u16(pt.val[3], -3));
 	}
-	pt[0] = veor_u16(pt[0], vld1_dup_u16(rks));
-	pt[1] = veor_u16(pt[1], vld1_dup_u16(rks+1);
-	pt[2] = veor_u16(pt[2], vld1_dup_u16(rks+2);
-	pt[3] = veor_u16(pt[3], vld1_dup_u16(rks+3);
+	pt.val[0] = veor_u16(pt.val[0], vld1_dup_u16(rks));
+	pt.val[1] = veor_u16(pt.val[1], vld1_dup_u16(rks+1);
+	pt.val[2] = veor_u16(pt.val[2], vld1_dup_u16(rks+2);
+	pt.val[3] = veor_u16(pt.val[3], vld1_dup_u16(rks+3);
 	/* store cipher text */
 	vst4_lane_u16(cipher_text,    pt, 0);
 	vst4_lane_u16(cipher_text+4,  pt, 1);
