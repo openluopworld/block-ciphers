@@ -20,6 +20,7 @@ void encrypt(const uint8_t *rks,
 {	
 	uint16x4x4_t pt;
 	uint16x4_t sbox0, sbox1;
+	uint16x4_t invert = 0xffffffffffffffff;
 	int i;
 
 	vld4_lane_u16(plain_text,    pt, 0); // first line of 4 blocks
@@ -38,7 +39,7 @@ void encrypt(const uint8_t *rks,
 		sbox0 =  pt[2];	
 		pt[2] = veor_u16(pt[0], pt[1]);
 //		pt[1]    =  ~pt[1];
-		pt[1] = veor_u16(pt[1], 0xffffffffffffffff);
+		pt[1] = veor_u16(pt[1], invert);
 		sbox1 =  pt[0];
 		pt[0] = vand_u16(pt[0], pt[1]);
 		pt[1] = vorr_u16(pt[1], pt[3]);
