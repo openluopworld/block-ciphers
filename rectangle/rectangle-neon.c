@@ -39,19 +39,24 @@ const uint8_t rcs[25] = {
  |   p    |-/
  |----------------------------------------------------------------|
  */
-void encrypt(const uint8_t *rks,
+
+void encrypt(const uint8_t *roundKeys,
 	const uint8_t *plain_text, 
 	uint8_t *cipher_text)
 {	
 	uint16x4x4_t pt;
 	uint16x4_t sbox0, sbox1;
-	uint16x4_t invert = 0xffffffffffffffff;
+	uint16x4_t invert = {0xffff, 0xffff, 0xffff, 0xffff};
 	int i;
 
-	vld4_lane_u16(plain_text,    pt, 0); // first line of 4 blocks
-	vld4_lane_u16(plain_text+4,  pt, 1); // second ...
-	vld4_lane_u16(plain_text+8,  pt, 2); // third ...
-	vld4_lane_u16(plain_text+12, pt, 3); // forth line of 4 blocks
+	const uint16_t *rks   = roundKeys;
+	const uint16_t *plain = plain_text;
+	uint16_t *cipher      = cipher_text;
+
+	vld4_lane_u16(plain,    pt, 0); // first line of 4 blocks
+	vld4_lane_u16(plain+4,  pt, 1); // second ...
+	vld4_lane_u16(plain+8,  pt, 2); // third ...
+	vld4_lane_u16(plain+12, pt, 3); // forth line of 4 blocks
 
 	for (i = 0; i < ROUNDS; ++i) {
 		/* AddRoundKey */
@@ -85,8 +90,65 @@ void encrypt(const uint8_t *rks,
 	pt.val[2] = veor_u16(pt.val[2], vld1_dup_u16(rks+2);
 	pt.val[3] = veor_u16(pt.val[3], vld1_dup_u16(rks+3);
 	/* store cipher text */
-	vst4_lane_u16(cipher_text,    pt, 0);
-	vst4_lane_u16(cipher_text+4,  pt, 1);
-	vst4_lane_u16(cipher_text+8,  pt, 2);
-	vst4_lane_u16(cipher_text+12, pt, 3);
+	vst4_lane_u16(cipher,    pt, 0);
+	vst4_lane_u16(cipher+4,  pt, 1);
+	vst4_lane_u16(cipher+8,  pt, 2);
+	vst4_lane_u16(cipher+12, pt, 3);
 }
+
+void decrypt(const uint8_t *rks,
+	const uint8_t *cipher_text,
+	uint8_t *plain_text)
+{	
+	uint16x4x4_t ct;
+	uint16x4_t sbox0;
+	uint16x4_t invert = {0xffff, 0xffff, 0xffff, 0xffff};
+	int i;
+	const uint16_t *rks    = roundKeys;
+	const uint16_t *cipher = cipher_text;
+	uint16_t *plain        = plain_text;
+
+	rks += 100;
+	vld4_lane_u16(cipher,    ct, 0); // first line of 4 blocks
+	vld4_lane_u16(cipher+4,  ct, 1); // second ...
+	vld4_lane_u16(cipher+8,  ct, 2); // third ...
+	vld4_lane_u16(cipher+12, ct, 3); // forth line of 4 blocks
+	for (i = 0; i < ROUNDS; ++i) {
+		/* AddRoundKey */
+		ct.val[0] = veor_u16(ct.val[0], vld1_dup_u16(rks));
+		ct.val[1] = veor_u16(ct.val[1], vld1_dup_u16(rks+1);
+		ct.val[2] = veor_u16(ct.val[2], vld1_dup_u16(rks+2);
+		ct.val[3] = veor_u16(ct.val[3], vld1_dup_u16(rks+3);
+		rk16 -= 4;
+		/* ShiftRow */
+		ct.val[1] = vorr_u16(vshl_u16(ct.val[1], -1), vshl_u16(ct.val[1], 15));
+		ct.val[2] = vorr_u16(vshl_u16(ct.val[2], -12), vshl_u16(ct.val[2], 4));
+		ct.val[3] = vorr_u16(vshl_u16(ct.val[3], -13), vshl_u16(ct.val[3], 3));
+		/* Invert sbox */
+		sbox0 =  w0;
+		ct.val[0] = vand_u16(ct.val[0], ct.val[2]);
+		ct.val[0] = veor_u16(ct.val[0], ct.val[3]);
+		ct.val[3] = vorr_u16(ct.val[3], sbox0);
+		ct.val[3] = veor_u16(ct.val[3], ct.val[2]);
+		ct.val[1] = veor_u16(ct.val[1], ct.val[3]);
+		w2    =  w1;
+		ct.val[1] = veor_u16(ct.val[1], sbox0);
+		ct.val[1] = veor_u16(ct.val[1], ct.val[0]);
+		ct.val[3] = veor_u16(ct.val[3], invert);
+		sbox0 =  w3;
+		ct.val[3] = vorr_u16(ct.val[3], ct.val[1]);
+		ct.val[3] = veor_u16(ct.val[3], ct.val[0]);
+		ct.val[0] = vand_u16(ct.val[0], ct.val[1]);
+		ct.val[0] = veor_u16(ct.val[0], sbox0);
+	}
+	ct.val[0] = veor_u16(ct.val[0], vld1_dup_u16(rks));
+	ct.val[1] = veor_u16(ct.val[1], vld1_dup_u16(rks+1);
+	ct.val[2] = veor_u16(ct.val[2], vld1_dup_u16(rks+2);
+	ct.val[3] = veor_u16(ct.val[3], vld1_dup_u16(rks+3);
+	/* store plain text */
+	vst4_lane_u16(plain,    ct, 0);
+	vst4_lane_u16(plain+4,  ct, 1);
+	vst4_lane_u16(plain+8,  ct, 2);
+	vst4_lane_u16(plain+12, ct, 3);
+}
+
