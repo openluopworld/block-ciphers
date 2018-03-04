@@ -16,6 +16,8 @@ const uint8_t rcs[25] = {
 
 
 /*
+ * Four blocks in parallel, may be eight blocks can be used
+ *
  * Here, a, b, ...and p are all 16-bit values
  *
  |in disk |                4 64-bit register                      |

@@ -44,7 +44,7 @@ Implementations of some lightweight block ciphers in C
 
 ### NEON projects or references
 * projects
- + [Ne10](https://github.com/projectNe10/Ne10)
+  + [Ne10](https://github.com/projectNe10/Ne10)
 * references
- + [neon-simple-guide](https://github.com/thenifty/neon-guide)
- + [ARM NEON Programmer's Reading Guide](https://github.com/yszheda/wiki/wiki/ARM-NEON-Programmer%E2%80%99s-Guide-Reading-Notes)
+  + [neon-simple-guide](https://github.com/thenifty/neon-guide)
+  + [ARM NEON Programmer's Reading Guide](https://github.com/yszheda/wiki/wiki/ARM-NEON-Programmer%E2%80%99s-Guide-Reading-Notes)
