@@ -1,5 +1,5 @@
 
-### Some Lightweight Block Ciphers
+## Some Lightweight Block Ciphers
 
 Implementations of some lightweight block ciphers in C
 
@@ -22,7 +22,9 @@ Implementations of some lightweight block ciphers in C
   + May add an implementation of ARM NEON
 * [SKINNY 128/128](https://eprint.iacr.org/2016/660.pdf)
 
-### NEON
+## ARM NEON
+
+### NEON intrinsics
 * load
   + vld4\_16
 ```C
@@ -39,3 +41,10 @@ Implementations of some lightweight block ciphers in C
  uit16x4x4_t vld4_lane_u16 (const uint16_t *, uint16x4x4_t, const int) 
  Form of expected instruction(s): vld4.16 {d0[0], d1[0], d2[0], d3[0]}, [r0]
 ```
+
+### NEON projects or references
+* projects
+ + [Ne10](https://github.com/projectNe10/Ne10)
+* references
+ + [neon-simple-guide](https://github.com/thenifty/neon-guide)
+ + [ARM NEON Programmer's Reading Guide](https://github.com/yszheda/wiki/wiki/ARM-NEON-Programmer%E2%80%99s-Guide-Reading-Notes)
