@@ -50,3 +50,5 @@ Implementations of some lightweight block ciphers in C
   + [ARM NEON Programmer's Reading Guide](https://github.com/yszheda/wiki/wiki/ARM-NEON-Programmer%E2%80%99s-Guide-Reading-Notes)
   + [NEON and VFP编程](http://infocenter.arm.com/help/topic/com.arm.doc.dui0204ic/DUI0204IC_rvct_assembler_guide.pdf)指令含义中文介绍, page 323
   + [Cortex-A9 NEON Media Processing Engine Revision: r4p1](http://infocenter.arm.com/help/topic/com.arm.doc.ddi0409i/DDI0409I_cortex_a9_neon_mpe_r4p1_trm.pdf)指令时间说明
+  + [加载移位转置反转及相关图示说明](http://blog.csdn.net/aliqing777/article/details/50847456)
+  + [ARM中文社区](https://community.arm.com/cn/b/blog)
