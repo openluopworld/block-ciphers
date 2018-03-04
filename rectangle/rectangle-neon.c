@@ -14,6 +14,31 @@ const uint8_t rcs[25] = {
 	0x0c, 0x19, 0x13, 0x07, 0x0f, 0x1f, 0x1e, 0x1c, 
 	0x18, 0x11, 0x03, 0x06, 0x0d, 0x1b, 0x17, 0x0e, 0x1d};
 
+
+/*
+ * Here, a, b, ...and p are all 16-bit values
+ *
+ |in disk |                4 64-bit register                      |
+ |        |                                                       |
+ |----------------------------------------------------------------|
+ |   a    |-\
+ |   b    | |
+ |   c    | | first block -\
+ |   d    |-/              |
+ |   e    |-\              |
+ |   f    | |              |      ---------------------------------
+ |   g    | | second block |      |   m   |   i   |   e   |   a   |
+ |   h    |-/              |--->> |   n   |   j   |   f   |   b   |
+ |   i    |-\              |--->> |   o   |   k   |   g   |   c   |
+ |   j    | |              |      |   p   |   l   |   h   |   d   |
+ |   k    | | third block  |      ---------------------------------
+ |   l    |-/              |
+ |   m    |-\              |
+ |   n    | |              |
+ |   o    | | forth block -/
+ |   p    |-/
+ |----------------------------------------------------------------|
+ */
 void encrypt(const uint8_t *rks,
 	const uint8_t *plain_text, 
 	uint8_t *cipher_text)
@@ -65,4 +90,3 @@ void encrypt(const uint8_t *rks,
 	vst4_lane_u16(cipher_text+8,  pt, 2);
 	vst4_lane_u16(cipher_text+12, pt, 3);
 }
-
