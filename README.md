@@ -25,8 +25,7 @@ Implementations of some lightweight block ciphers in C
 ## ARM NEON
 
 ### NEON intrinsics
-* load
-  + vld4\_16
+ + vld4\_16
 ```C
   uint16x4x4 vld4_16(const uint16_t *)
   Form of expected instructions: vld4.16 {d0, d1, d2, d3}, [r0]
@@ -52,3 +51,14 @@ Implementations of some lightweight block ciphers in C
   + [Cortex-A9 NEON Media Processing Engine Revision: r4p1](http://infocenter.arm.com/help/topic/com.arm.doc.ddi0409i/DDI0409I_cortex_a9_neon_mpe_r4p1_trm.pdf)指令时间说明
   + [加载移位转置反转及相关图示说明](http://blog.csdn.net/aliqing777/article/details/50847456)
   + [ARM中文社区](https://community.arm.com/cn/b/blog)
+  + [ARM NEON optimization](https://community.arm.com/android-community/b/android/posts/arm-neon-optimization), ARM社区
+    - 示例：Remove data dependencies
+    - 示例：Reduce branched
+    - **NEON assembly and intrinsic优劣势比较**
+  + [ARM NEON programming quick reference](https://community.arm.com/android-community/b/android/posts/arm-neon-programming-quick-reference), ARM社区
+    - AMMv7-A, ARMv8-A AArch32, ARMv8-A AArch64寄存器、指令结构
+    - NEON汇编示例：**Assembly files** or **Inline assembly**
+  + [Coding for NEON - Part 1: load and stores](https://community.arm.com/processors/b/blog/posts/coding-for-neon---part-1-load-and-stores)
+  + [Coding for NEON - Part 2: Dealing With Leftovers](https://community.arm.com/processors/b/blog/posts/coding-for-neon---part-2-dealing-with-leftovers)
+  + [Coding for NEON - Part 4: Shifting Left and Right](https://community.arm.com/processors/b/blog/posts/coding-for-neon---part-4-shifting-left-and-right)
+  + [Coding for NEON - Part 5: Rearranging Vectors](https://community.arm.com/processors/b/blog/posts/coding-for-neon---part-5-rearranging-vectors)
