@@ -69,7 +69,11 @@ Implementations of some lightweight block ciphers in C
 + [objdump](https://en.wikipedia.org/wiki/Objdump) is a program for displaying various information about object files on Unix-like systems
 + [How to check the existence of NEON on arm?](https://stackoverflow.com/questions/26701262/how-to-check-the-existence-of-neon-on-arm)
 
-### ARM64 ASIMD
+### ARMv8-a ARM64 ASIMD
 + [AARCH64 ARMV8 NEON的变动](https://my.oschina.net/rinehart/blog/354523)
   - v8-v15在子函数调用时必须要保留，但是只保留低64bits
 + [Procedure Call Standard for the ARM 64-bit Architecture](http://infocenter.arm.com/help/topic/com.arm.doc.ihi0055b/IHI0055B_aapcs64.pdf)
++ [Getting to know ARM64 NEON](https://neondsp.wordpress.com/2013/12/01/getting-to-know-arm64-neon/)一个向量加法示例
+
+### ARMv7-a
++ [从一个复数点积算法看NEON的汇编优化](https://community.arm.com/cn/b/blog/posts/neon-assemble-optimization-2013)向量乘法加法示例
