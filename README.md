@@ -63,3 +63,8 @@ Implementations of some lightweight block ciphers in C
   + [ARM NEON编程初探——一个简单的BGR888转YUV444实例详解](http://galoisplusplus.coding.me/blog/2017/06/10/use-arm-neon-to-accelerate-bgr888-to-yuv444/)
   + [ARM NEON Programmer's Reading Guide](https://github.com/yszheda/wiki/wiki/ARM-NEON-Programmer%E2%80%99s-Guide-Reading-Notes)
   + [ARM NEON tips](https://github.com/yszheda/wiki/wiki/ARM-NEON-tips)
+  + [An Introduction to ARM NEON](http://peterdn.com/post/an-introduction-to-ARM-NEON.aspx)
+  + [ARM NEON support in the ARM compiler](https://www.arm.com/files/pdf/NEON_Support_in_the_ARM_Compiler.pdf) White Paper
+  + [ARM Compiler Version 5.06 armasm user guide](http://infocenter.arm.com/help/topic/com.arm.doc.dui0473m/DUI0473M_armasm_user_guide.pdf)指令描述更加详细，有图示
+  + [objdump](https://en.wikipedia.org/wiki/Objdump) is a program for displaying various information about object files on Unix-like systems
+  + [How to check the existence of NEON on arm?](https://stackoverflow.com/questions/26701262/how-to-check-the-existence-of-neon-on-arm)
